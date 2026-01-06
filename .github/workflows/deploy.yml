@@ -6,9 +6,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CONTENTFUL_API_KEY: ${{ secrets.CONTENTFUL_API_KEY }}
+      CONTENTFUL_ENV: ${{ env.CONTENTFUL_ENV }}
+      CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
     steps:
       - uses: actions/checkout@v6
       - run: mkdir build && echo "<h1>Hello World!</h1>" > build/index.html
+      - run: |
+          NAME=$(curl https://cdn.contentful.com/spaces/$CONTENTFUL_SPACE_ID/environments/$CONTENTFUL_ENV/entries?access_token=$CONTENTFUL_API_KEY | jq .items[0].fields.name)
+          echo "Soprano: $NAME" >> build/index.html
       - uses: actions/upload-pages-artifact@v4
         with:
           path: build
