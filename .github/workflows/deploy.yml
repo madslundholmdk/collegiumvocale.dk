@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - run: mkdir build && echo "<h1>Hello World!</h1>" > build/index.html
-      - uses: actions/upload-pages-artifact
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: build
   deploy:
